@@ -53,5 +53,10 @@ namespace RideServiceGroup2.DAL
                 Description = description
             };
         }
+        public void AddCategory(RideCategory category)
+        {
+                string sqlInsert = $"INSERT INTO RideCategories VALUES('{category.Name}','{category.Description}')";
+                ExecuteNonQuery(sqlInsert);
+        }
     }
 }

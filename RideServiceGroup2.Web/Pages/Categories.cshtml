@@ -7,6 +7,20 @@
 @using RideServiceGroup2.Entities
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
+<article>
+    <form method="post">
+        <h3>Opret ny kategori</h3>
+        <label asp-for="CategoryName"></label>
+        <input asp-for="CategoryName" /><br />
+        <label asp-for="CategoryDescription"></label>
+        <input asp-for="CategoryDescription" /><br />
+        <input type="submit" value="Opret" />
+        @if (Model.Message != "")
+        {
+            <p>@Model.Message</p>
+        }
+    </form>
+</article>
 
 @foreach (RideCategory category in Model.Categories)
 {
