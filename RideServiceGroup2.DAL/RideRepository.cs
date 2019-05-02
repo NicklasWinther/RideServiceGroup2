@@ -40,5 +40,39 @@ namespace RideServiceGroup2.DAL
 
             return rides;
         }
+
+        public List<Ride> GetRidesBasedOnCategory(string categoryName)
+        {
+            string sql = $"SELECT * FROM Rides JOIN RideCategories ON RideCategories.RideCategoryId = Rides.CategoryId WHERE RideCategories.Name = '{categoryName}'";
+            DataTable ridesTable = ExecuteQuery(sql);
+            List<Ride> rides = new List<Ride>();
+            CategoryRepository categoryRepo = new CategoryRepository();
+
+            foreach (DataRow row in ridesTable.Rows)
+            {
+                int id = (int)row["RideId"];
+                string name = (string)row["Name"];
+                string imgUrl = (string)row["ImgUrl"];
+                string description = (string)row["Description"];
+                int categoryId = (int)row["CategoryId"];
+
+                Ride ride = new Ride()
+                {
+                    Id = id,
+                    Name = name,
+                    ImgUrl = imgUrl,
+                    Description = description,
+                    Category = categoryRepo.GetCategory(categoryId)
+                };
+                rides.Add(ride);
+
+            }
+            ReportRepository reportRepository = new ReportRepository();
+            foreach (Ride ride in rides)
+            {
+                ride.Reports = reportRepository.GetReportsFor(ride.Id);
+            }
+            return rides;
+        }
     }
 }

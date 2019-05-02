@@ -3,37 +3,29 @@
 @{
     ViewData["Title"] = "SearchRide";
     Layout = "~/Pages/Shared/_Layout.cshtml";
+    @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 }
 @using RideServiceGroup2.Entities
 <article>
-    <form>
+    <form method="post">
+        @Html.AntiForgeryToken()
         <fieldset>
             <legend>Søg efter forlystelse</legend>
-            <label for="name">Navn:</label>
-            <input type="text" name="name" placeholder="Indtast navn på forlystelse" autofocus /><br />
+            <label asp-for="name"></label>
+            <input asp-for="name"/><br>
+            <label asp-for="category"></label>
 
-            @*<label for="category">Kategori:</label>
-            <input type="text" name="category" placeholder="Indtast kategori" /><br />*@
-
-            <label for="category">Kategori:</label>
-            <select name="category">
+            <select asp-for="category" asp-items="@(new SelectList(Model.rideCategories, "Name", "Name"))">
                 <option value="all">Alle</option>
-                @foreach (RideCategory category in Model.rideCategories)
-                {
-                    <option value="@category.Name">@category.Name</option>
-                }
             </select><br />
-                <label for="status">Status:</label>
-                <select name="status">
-                    <option value="all" selected>Alle</option>
-                    <option value="Working">Virker</option>
-                    <option value="Broken">Virker ikke</option>
-                    <option value="BeingRepaired">Under reperation</option>
-                </select>
-                <br />
 
-                <input type="submit" value="Søg" />
-</fieldset>
+            <label asp-for="status"></label>
+            <select asp-for="status" asp-items="Html.GetEnumSelectList<Status>()">
+                <option value="0">Alle</option>
+            </select><br />
+            
+            <input type="submit" value="Søg" />
+        </fieldset>
     </form>
 </article>
 

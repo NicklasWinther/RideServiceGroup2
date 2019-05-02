@@ -24,7 +24,7 @@ namespace RideServiceGroup2.Entities
                 }
             }
         }
-        public List<Report> Reports { get; set; }
+        public List<Report> Reports { get; set; } = new List<Report>();
         public int NumberOfShutdowns()
         {
             int numberOfShutDowns = 0;

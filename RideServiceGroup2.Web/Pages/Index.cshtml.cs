@@ -11,12 +11,12 @@ namespace RideServiceGroup2.Web.Pages
 {
     public class IndexModel : PageModel
     {
-        public List<Ride> rides { get; set; }
+        public List<Ride> Rides { get; set; }
         public void OnGet()
         {
             RideRepository rideRepository = new RideRepository();
 
-            rides = rideRepository.GetAllRides();
+            Rides = rideRepository.GetAllRides();
         }
     }
 }

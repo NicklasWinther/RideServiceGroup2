@@ -1,0 +1,35 @@
+﻿@page "{name?}"
+@model RideServiceGroup2.Web.Pages.CategoriesModel
+@{
+    ViewData["Title"] = "Categories";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+@using RideServiceGroup2.Entities
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+
+@foreach (RideCategory category in Model.Categories)
+{
+    <article>
+        <a href="~/Categories/@category.Name">
+            <h2>@category.Name</h2>
+            <p>@category.Description</p>
+        </a>
+    </article>
+}
+@foreach (Ride ride in Model.Rides)
+{
+    <article>
+        <a href="Ride/@ride.Id">
+            <h3>@ride.Name</h3>
+        </a>
+        <hr>
+        <a href="Ride/@ride.Id">
+            <img src="~/@ride.ImgUrl" alt="@ride.Name">
+        </a>
+        <p>@ride.GetShortDescription()</p>
+        <div>
+            <p>Status: @ride.TranslateStatus()</p>
+        </div>
+    </article>
+}

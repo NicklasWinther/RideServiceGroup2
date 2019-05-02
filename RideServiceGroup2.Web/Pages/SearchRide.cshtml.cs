@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -13,52 +14,61 @@ namespace RideServiceGroup2.Web.Pages
     {
         public List<Ride> rides { get; set; } = new List<Ride>();
         public List<RideCategory> rideCategories { get; set; } = new List<RideCategory>();
-        [BindProperty(SupportsGet = true)]
+
+        [BindProperty]
+        [Display(Name = "Navn")]
         public string name { get; set; } = "";
-        [BindProperty(SupportsGet = true)]
+
+        [BindProperty]
+        [Display(Name = "Kategori")]
         public string category { get; set; } = "";
-        [BindProperty(SupportsGet = true)]
-        public string status { get; set; } = "";
+
+        [BindProperty]
+        [Display(Name = "Status")]
+        public int status { get; set; } 
 
 
         public void OnGet()
         {
             CategoryRepository categoryRepository = new CategoryRepository();
             rideCategories = categoryRepository.GetAllRideCategories();
+        }
+        public void OnPost()
+        {
+            CategoryRepository categoryRepository = new CategoryRepository();
+            rideCategories = categoryRepository.GetAllRideCategories();
+            
+            RideRepository rideRepository = new RideRepository();
+            rides = rideRepository.GetAllRides();
+            
 
-            if (status != "")
+            if (name != "" && name != null)
             {
-                RideRepository rideRepository = new RideRepository();
-                rides = rideRepository.GetAllRides();
-
-                if (name != "" && name != null)
+                for (int i = rides.Count - 1; i >= 0; i--)
                 {
-                    for (int i = rides.Count - 1; i >= 0; i--)
+                    if (!rides[i].Name.ToLower().Contains(name.ToLower()))
                     {
-                        if (!rides[i].Name.ToLower().Contains(name.ToLower()))
-                        {
-                            rides.Remove(rides[i]);
-                        }
+                        rides.Remove(rides[i]);
                     }
                 }
-                if (category != "all")
+            }
+            if (category != "all")
+            {
+                for (int i = rides.Count - 1; i >= 0; i--)
                 {
-                    for (int i = rides.Count - 1; i >= 0; i--)
+                    if (rides[i].Category.Name != category)
                     {
-                        if (rides[i].Category.Name != category)
-                        {
-                            rides.Remove(rides[i]);
-                        }
+                        rides.Remove(rides[i]);
                     }
                 }
-                if (status != "all" )
+            }
+            if (status != 0)
+            {
+                for (int i = rides.Count - 1; i >= 0; i--)
                 {
-                    for(int i = rides.Count - 1; i >= 0; i--)
+                    if ((int)rides[i].Status != status)
                     {
-                        if (!rides[i].Status.ToString().Contains(status))
-                        {
-                            rides.Remove(rides[i]);
-                        }
+                        rides.Remove(rides[i]);
                     }
                 }
             }
