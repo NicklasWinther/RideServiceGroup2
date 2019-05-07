@@ -1,0 +1,26 @@
+﻿@page
+@model RideServiceGroup2.Web.Pages.StatisticsModel
+@{
+    ViewData["Title"] = "Statistics";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<article>
+    <h2>Forlystelse flest gange i stykker</h2>
+    <h3>@Model.MostBroken.Name: @Model.TimesBroken gang(e)</h3>
+    <hr>
+    <img src="@Model.MostBroken.ImgUrl" alt="@Model.MostBroken.Name">
+    <div>
+        <p>Status: @Model.MostBroken.TranslateStatus()</p>
+    </div>
+</article>
+
+<article>
+    <h2>Seneste forlystelse i stykker</h2>
+        <h3>@Model.LatestBroken.Name</h3>
+    <hr>
+        <img src="@Model.LatestBroken.ImgUrl" alt="@Model.LatestBroken.Name">
+    <div>
+        <p>Status: @Model.LatestBroken.TranslateStatus()</p>
+    </div>
+</article>

@@ -1,5 +1,4 @@
-﻿@page
-@using RideServiceGroup2.Entities;
+﻿@page "{id:int?}"
 @model RideServiceGroup2.Web.Pages.CreateRideModel
 @{
     ViewData["Title"] = "CreateRide";
@@ -7,29 +6,35 @@
 }
 
 <div class="addProducts">
-    <h2>Opret forlystelse</h2>
-    <form action="Index" method="post">
+    <h2>@Model.HeaderText</h2>
+    <form method="post" asp-page-handler="@Model.PageHandler">
         @Html.AntiForgeryToken()
-        <label for="Ride.Name">Navn:</label>
-        <input type="text" name="Ride.Name" />
+        <input asp-for="Ride.Id" hidden/>
+        <label asp-for="Ride.Name">Navn:</label>
+        <input asp-for="Ride.Name" placeholder="Skriv navn" value="@Model.Ride.Name" />
         <br />
-        <label for="Ride.ImgUrl">Navn på billede:</label>
-        <input type="text" name="Ride.ImgUrl" placeholder="Fx orkanen.jpg" />
+        <label asp-for="Ride.ImgUrl">Navn på billede:</label>
+        <input asp-for="Ride.ImgUrl" placeholder="Fx orkanen.jpg" value="@Model.Ride.ImgUrl" />
         <br />
-        <label for="Ride.Category">Kategori:</label>
-        <select name="Ride.Category">
-            @{
-                foreach (RideCategory category in Model.Categories)
+        <label asp-for="Ride.Category">Kategori:</label>
+        <select asp-for="Ride.Category.Id">
+            @foreach (RideCategory category in Model.Categories)
+            {
+                if (category.Name == Model.CategoryValue)
                 {
-                    <option value="@category.Name">@category.Name</option>
+                    <option value="@category.Id" selected>@category.Name</option>
+                }
+                else
+                {
+                    <option value="@category.Id">@category.Name</option>
                 }
             }
         </select>
         <br />
-        <label for="Ride.Description">Beskrivelse:</label>
+        <label asp-for="Ride.Description">Beskrivelse:</label>
         <br />
-        <textarea name="Ride.Description"></textarea>
+        <textarea asp-for="Ride.Description"></textarea>
         <br />
-        <input type="submit" value="Opret" />
+        <input type="submit" value="@Model.SubmitValue" />
     </form>
 </div>

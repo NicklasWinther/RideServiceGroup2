@@ -41,6 +41,71 @@ namespace RideServiceGroup2.DAL
             return rides;
         }
 
+        public (Ride ride, int timesBroken) GetMostBrokenRide()
+        {
+            CategoryRepository categoryRepo = new CategoryRepository();
+            ReportRepository reportRepository = new ReportRepository();
+            string sql = $"SELECT TOP(1) COUNT(status) AS TimesBroken, Rides.Name, Rides.RideId, ImgUrl, Description, CategoryId FROM Rides JOIN Reports ON Reports.RideId = Rides.RideId WHERE Status = 2 GROUP BY Rides.Name, Rides.RideId, ImgUrl, Description, CategoryId ";
+
+            DataTable rideTable = ExecuteQuery(sql);
+            DataRow row = rideTable.Rows[0];
+            int timesBroken = (int)row["TimesBroken"];
+            Ride ride = new Ride()
+            {
+                Id = (int)row["RideId"],
+                Name = (string)row["Name"],
+                ImgUrl = (string)row["ImgUrl"],
+                Description = (string)row["Description"],
+                Category = categoryRepo.GetCategory((int)row["CategoryId"]),
+                Reports = reportRepository.GetReportsFor((int)row["RideId"])
+            };
+            return (ride, timesBroken);
+        }
+
+        public Ride GetLatestBrokenRide()
+        {
+            CategoryRepository categoryRepo = new CategoryRepository();
+            ReportRepository reportRepository = new ReportRepository();
+            string sql = "SELECT TOP(1) * FROM Reports JOIN Rides ON Reports.RideId = Rides.RideId WHERE Status = 2 ORDER BY ReportTime DESC";
+            DataTable rideTable = ExecuteQuery(sql);
+            DataRow row = rideTable.Rows[0];
+            Ride ride = new Ride()
+            {
+                Id = (int)row["RideId"],
+                Name = (string)row["Name"],
+                ImgUrl = (string)row["ImgUrl"],
+                Description = (string)row["Description"],
+                Category = categoryRepo.GetCategory((int)row["CategoryId"]),
+                Reports = reportRepository.GetReportsFor((int)row["RideId"])
+            };
+            return ride;
+        }
+
+        public Ride GetById(int id)
+        {
+            CategoryRepository categoryRepo = new CategoryRepository();
+            ReportRepository reportRepository = new ReportRepository();
+            string sql = $"SELECT * FROM Rides WHERE RideId = {id}";
+            DataTable rideTable = ExecuteQuery(sql);
+            DataRow row = rideTable.Rows[0];
+            Ride ride = new Ride()
+            {
+                Id = (int)row["RideId"],
+                Name = (string)row["Name"],
+                ImgUrl = (string)row["ImgUrl"],
+                Description = (string)row["Description"],
+                Category = categoryRepo.GetCategory((int)row["CategoryId"]),
+                Reports = reportRepository.GetReportsFor((int)row["RideId"])
+            };
+            return ride;
+        }
+
+        public void Update(Ride ride)
+        {
+            string sql = $"UPDATE Rides SET Name = '{ride.Name}', ImgUrl = '{ride.ImgUrl}', Description = '{ride.Description}', CategoryId = '{ride.Category.Id}' WHERE RideId = {ride.Id}";
+            ExecuteNonQuery(sql);
+        }
+
         public List<Ride> GetRidesBasedOnCategory(string categoryName)
         {
             string sql = $"SELECT * FROM Rides JOIN RideCategories ON RideCategories.RideCategoryId = Rides.CategoryId WHERE RideCategories.Name = '{categoryName}'";

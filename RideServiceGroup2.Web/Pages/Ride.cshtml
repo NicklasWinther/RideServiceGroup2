@@ -15,5 +15,6 @@
         <p>@Model.Ride.Description</p>
         <p>Antal nedbrud: @Model.Ride.NumberOfShutdowns()</p>
         <p>Dage siden seneste nedbrud: @Model.Ride.DaysSinceLastShutdown()</p>
+        <p><a asp-page="CreateRide" asp-page-handler="Edit">Redigér forlystelse</a></p>
     </div>
 </article>

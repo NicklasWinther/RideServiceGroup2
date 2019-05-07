@@ -2,22 +2,22 @@
 @model RideServiceGroup2.Web.Pages.IndexModel
 @{
     Layout = "~/Pages/Shared/_Layout.cshtml";
-    @using RideServiceGroup2.Entities
+}
+    
 
-    @foreach (Ride ride in Model.Rides)
-    {
-        <article>
-            <a href="Ride/@ride.Id">
-                <h3>@ride.Name</h3>
-            </a>
-            <hr>
-            <a href="Ride/@ride.Id">
-                <img src="@ride.ImgUrl" alt="@ride.Name">
-            </a>
-            <p>@ride.GetShortDescription()</p>
-            <div>
-                <p>Status: @ride.TranslateStatus()</p>
-            </div>
-        </article>
-    }
+@foreach (Ride ride in Model.Rides)
+{
+    <article>
+        <a href="Ride/@ride.Id">
+            <h3>@ride.Name</h3>
+        </a>
+        <hr>
+        <a href="Ride/@ride.Id">
+            <img src="@ride.ImgUrl" alt="@ride.Name">
+        </a>
+        <p>@ride.GetShortDescription()</p>
+        <div>
+            <p>Status: @ride.TranslateStatus()</p>
+        </div>
+    </article>
 }

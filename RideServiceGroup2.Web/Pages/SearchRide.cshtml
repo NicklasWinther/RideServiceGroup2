@@ -3,9 +3,7 @@
 @{
     ViewData["Title"] = "SearchRide";
     Layout = "~/Pages/Shared/_Layout.cshtml";
-    @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 }
-@using RideServiceGroup2.Entities
 <article>
     <form method="post">
         @Html.AntiForgeryToken()
@@ -35,7 +33,7 @@
     <article>
         <h3>@ride.Name</h3>
         <hr>
-        <a href="">
+        <a href="Ride/@ride.Id">
             <img src="@ride.ImgUrl" alt="@ride.Name">
         </a>
         <p>@ride.GetShortDescription()</p>
